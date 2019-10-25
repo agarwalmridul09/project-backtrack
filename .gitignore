@@ -1,4 +1,6 @@
 .idea/
 db.sqlite3
-user_registration/migrations
+**/migrations
 venv
+**/__pycache__
+.vscode/
