@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% if user.is_authenticated %}
+<html lang="en" style="height: 100%">
+<head>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>BackTrack</title>
+</head>
+<body style="height: 100%; width: 100%">
+<div style="background-color: rgb(272, 74, 87); height: 40px;" class="row align-items-center">
+    <div class="col-lg-2">
+        <img src="../static/images/menu_icon.png" style="height: 17px; width: 25px; margin-left: 10px; object-fit: contain;">
+    </div>
+    <div class="col-lg-8" style="text-align: center">
+        <span class="text-white-heading">{{title}}</span>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+{% block content %}
+{% endblock %}
+</body>
+</html>
+{% endif %}
+

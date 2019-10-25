@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from product_log.views import product_backlog_view
 from user_registration.views import login_view, sign_up_view
 
 
@@ -23,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('login/', login_view),
     url('signUp/', sign_up_view),
+    url('productBacklog/', product_backlog_view)
 ]
 
 handler404 = 'user_registration.views.view_404'

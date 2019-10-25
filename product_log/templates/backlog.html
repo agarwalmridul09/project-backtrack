@@ -1,0 +1,69 @@
+{% extends 'base_logged_in.html' %}
+{% block content %}
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">-->
+<!--    Launch demo modal-->
+<!--</button>-->
+<div class="row container-fluid align-items-center" style="height: 50px;">
+    <div class="col-11"></div>
+    <div class="col-1">
+        <div class="row">
+            <img src="../static/images/add_circle.png" class="img-add-edit" data-toggle="modal"
+                 data-target="#exampleModal">
+            <img src="../static/images/create_circle.png" class="img-add-edit">
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create A Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-group col-md-12" method="post">
+                    {{create_product.as_table}}
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary" value="productBacklog/">Save changes</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid" style="height: 100%">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" class="col-heading">Product</th>
+            <th scope="col" class="col-heading">Product Owner</th>
+            <th scope="col" class="col-heading">Manager</th>
+            <th scope="col" class="col-heading">Developers</th>
+            <th scope="col" class="col-heading">Start Date</th>
+            <th scope="col" class="col-heading">End Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for e in products %}
+        <tr>
+            <td>{{e.product_name}}</td>
+            <td>{{e.product_owner.first_name}} {{e.product_owner.last_name}}</td>
+            <td>{{e.product_manager.first_name}} {{e.product_manager.last_name}}</td>
+            <td>@mdo</td>
+            <td>{{e.start_date}}</td>
+            <td>{{e.end_date}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!-- Button trigger modal -->
+
+
+    <!-- Modal -->
+
+</div>
+{% endblock %}
+

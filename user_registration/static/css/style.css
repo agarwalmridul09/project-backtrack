@@ -30,6 +30,21 @@
     justify-content: space-around;
 }
 
+.img-add-edit {
+    object-fit: contain;
+    height: 30px;
+    width: 25px;
+    margin-left: 10px;
+}
+
+.text-white-heading {
+    text-decoration-color: white;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    font-size: 19px;
+}
+
 .text-white {
     text-decoration-color: white;
     text-align: center;

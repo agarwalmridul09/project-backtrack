@@ -12,6 +12,7 @@ def login_view(request, *args, **kwargs):
             user = authenticate(request, username=form.cleaned_data['email'], password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
+                return redirect("/productBacklog")
             else:
                 return render(request, 'login.html',
                               {'form': form, 'error_message': "Please enter valid email-id and password"})
