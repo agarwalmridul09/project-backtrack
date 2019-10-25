@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel="stylesheet" href="../static/css/style.css">
+<div class="container-fluid" style="height: 100%">
+    <div class="row" style="height: 100%;">
+        <div class="col-md-8 complete-center">
+            <img src="../static/images/logo.png" alt="BackTrack" width="40%"/>
+        </div>
+        <div class="col-md-4 input-container-column">
+            <div class="sub-column">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <span class="text-white">{{error_message}}</span>
+                        <form action="" class="form-group col-md-12" method="post">
+                            {{form.as_table}}
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark button-submit" value="login/">Login</button>
+                        </form>
+                        <span class="text-white">Forgot Password?</span>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <a href="/signUp/"><span class="text-white">Don't have an account?</span> <span
+                                class="text-black">Sign Up</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
