@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 # Create your models here.
 from user_registration.models import User
 
@@ -12,7 +12,6 @@ class Product(models.Model):
     product_owner = models.ForeignKey(User, to_field='email', on_delete=models.CASCADE, related_name='product_owner')
     start_date = models.DateField()
     end_date = models.DateField()
-
 
 class Developers(models.Model):
     id = models.CharField(primary_key=True, max_length=16)

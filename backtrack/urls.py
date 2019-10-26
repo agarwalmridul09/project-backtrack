@@ -14,17 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.urls import path
 from django.contrib import admin
 
 from product_log.views import product_backlog_view
 from user_registration.views import login_view, sign_up_view
+from product_backlog.views import pbis_view, pbis_create, pbis_edit
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('login/', login_view),
     url('signUp/', sign_up_view),
-    url('productBacklog/', product_backlog_view)
+    url('productBacklog/', product_backlog_view),
+    path('pbis/<slug:productid>', pbis_view, name='pbis'),
+    path('pbisedit/', pbis_edit, name='pbisedit'),
+    url('pbiscreate', pbis_create),
+    
 ]
 
 handler404 = 'user_registration.views.view_404'

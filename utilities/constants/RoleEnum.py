@@ -8,3 +8,16 @@ UserRole = (
     (DEVELOPER, 'Developer'),
     (MANAGER, 'Manager'),
 )
+
+# pbi status enum
+IN_PROGRESS = 'IN_PROGRESS'
+TO_DO = 'TO_DO'
+COMPLETED = 'COMPLETED'
+
+PBIStatus = (
+    (IN_PROGRESS, 'In Progress'),
+    (TO_DO, 'To Do'),
+    (COMPLETED, 'Completed')
+)
+
+

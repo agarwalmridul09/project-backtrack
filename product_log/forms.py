@@ -18,10 +18,7 @@ class CreateProduct(forms.Form):
                                              widget=forms.Select(attrs={
                                                  "class": "form-control input-field",
                                              }))
-    developers = forms.ModelChoiceField(queryset=User.objects.filter(role=RoleEnum.DEVELOPER),
-                                        widget=forms.SelectMultiple(attrs={
-                                            "class": "form-control input-field",
-                                        }))
+    developers = forms.ModelMultipleChoiceField(queryset=User.objects.filter(role=RoleEnum.DEVELOPER))
     start_date = forms.DateField(
         widget=forms.SelectDateWidget(attrs={
             "class": "form-control input-field",
@@ -32,6 +29,3 @@ class CreateProduct(forms.Form):
             "class": "form-control input-field",
             "style": "display: inline-block; width: auto; vertical-align: middle;"
         }))
-    # developer = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-    #                                       choices=User.objects.filter(role=RoleEnum.DEVELOPER).all().values_list(
-    #                                           'email', 'first_name'))

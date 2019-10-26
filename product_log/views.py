@@ -8,9 +8,6 @@ from product_log.models import Product
 
 
 def product_backlog_view(request, *args, **kwargs):
-    print("Start")
-    print(len(Product.objects.all()))
-    print("end")
     if request.method == 'POST':
         form = CreateProduct(request.POST)
         if form.is_valid():
@@ -28,3 +25,4 @@ def product_backlog_view(request, *args, **kwargs):
     return render(request, 'backlog.html', {'products': products,
                                             'title': "All Products",
                                             "create_product": form})
+

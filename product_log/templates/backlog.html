@@ -9,7 +9,6 @@
         <div class="row">
             <img src="../static/images/add_circle.png" class="img-add-edit" data-toggle="modal"
                  data-target="#exampleModal">
-            <img src="../static/images/create_circle.png" class="img-add-edit">
         </div>
     </div>
 </div>
@@ -48,6 +47,7 @@
         </thead>
         <tbody>
         {% for e in products %}
+
         <tr>
             <td>{{e.product_name}}</td>
             <td>{{e.product_owner.first_name}} {{e.product_owner.last_name}}</td>
@@ -55,6 +55,7 @@
             <td>@mdo</td>
             <td>{{e.start_date}}</td>
             <td>{{e.end_date}}</td>
+            <td><a href="{% url 'pbis' e.product_id %}">View PBIs</a></td>
         </tr>
         {% endfor %}
         </tbody>
@@ -65,5 +66,7 @@
     <!-- Modal -->
 
 </div>
+<!-- second modal  -->
+
 {% endblock %}
 
