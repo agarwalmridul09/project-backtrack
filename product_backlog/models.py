@@ -1,8 +1,8 @@
 from django.db import models
-from product_log.models import Product, Developers
 
+from product_log.models import Product
+from sprint_backlog.models import SpringBacklog
 from utilities.constants.RoleEnum import PBIStatus, TO_DO
-# Create your models here.
 
 
 class ProductBacklog(models.Model):
@@ -13,4 +13,5 @@ class ProductBacklog(models.Model):
     product_status = models.CharField(max_length=200, choices=PBIStatus, default=TO_DO)
     product_backlog_sprint = models.CharField(max_length=200)
     product_backlog_priority = models.CharField(max_length=200, default='1')
-
+    product_backlog_sprint_id = models.ForeignKey(SpringBacklog, to_field='sprint_id', on_delete=models.CASCADE,
+                                                  related_name='product_backlog_sprint_id', null=True, blank=True)

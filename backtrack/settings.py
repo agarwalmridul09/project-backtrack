@@ -39,7 +39,8 @@ INSTALLED_APPS = [
 
     'user_registration',
     'product_log',
-    'product_backlog'
+    'product_backlog',
+    'sprint_backlog'
 ]
 
 MIDDLEWARE = [

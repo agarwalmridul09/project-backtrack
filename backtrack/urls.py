@@ -18,6 +18,7 @@ from django.urls import path
 from django.contrib import admin
 
 from product_log.views import product_backlog_view
+from sprint_backlog.views import get_sprint_backlog
 from user_registration.views import login_view, sign_up_view
 from product_backlog.views import pbis_view, pbis_create, pbis_edit
 
@@ -28,9 +29,10 @@ urlpatterns = [
     url('signUp/', sign_up_view),
     url('productBacklog/', product_backlog_view),
     path('pbis/<slug:productid>', pbis_view, name='pbis'),
-    path('pbisedit/', pbis_edit, name='pbisedit'),
+    path('addPbiToSprint/', pbis_edit, name='addPbiToSprint'),
     url('pbiscreate', pbis_create),
-    
+    url('sprintBacklog', get_sprint_backlog),
+
 ]
 
 handler404 = 'user_registration.views.view_404'
