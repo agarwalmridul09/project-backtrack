@@ -18,7 +18,7 @@ from django.urls import path
 from django.contrib import admin
 
 from product_log.views import product_backlog_view
-from sprint_backlog.views import get_sprint_backlog
+from sprint_backlog.views import get_sprint_backlog, add_task, edit_task, update_task
 from user_registration.views import login_view, sign_up_view
 from product_backlog.views import pbis_view, pbis_create, pbis_edit, add_to_sprint_backlog
 
@@ -32,6 +32,9 @@ urlpatterns = [
     url('addToSprintBacklog', add_to_sprint_backlog, name='addToSprintBacklog'),
     url('pbiscreate', pbis_create),
     url('sprintBacklog', get_sprint_backlog),
+    url('addTask', add_task),
+    url('editTask', edit_task),
+    path('updateTask/<slug:task_id>', update_task, name='updateTask'),
 
 ]
 
