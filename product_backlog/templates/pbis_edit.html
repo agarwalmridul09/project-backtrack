@@ -1,70 +1,165 @@
 {% extends 'base_logged_in.html' %}
+
 {% block content %}
 
-<div class="row container-fluid align-items-center" style="height: 50px;">
-    <div class="col-11"></div>
-    <div class="col-1">
-        <div class="row">
-            <img id='add_button' src="../static/images/add_circle.png" class="img-add-edit" data-toggle="modal"
-                data-target="#exampleModal">
+<script>
+    
+    function addToPBI(PbiId) {
+        axios.post(`http://127.0.0.1:8000/addToSprintBacklog/`, {pbi: PbiId}    );
+    }
+
+    function deletePBI(PbiId, ProductId) {
+        axios.post(`http://127.0.0.1:8000/deletePbi/`, {pbi: PbiId, product_id: ProductId},   ).then((resp)=>{
+            location.reload()
+        })
+        
+    
+    }
+
+</script>
+
+<div >
+
+
+    
+    <div>
+            <div class="col-11"></div>
+            <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Product Backlog Item</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/pbisedit/" class="form-group col-md-12" method="post">
+                            {{create_pbi.as_table}}
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary" value="productBacklog/">Save changes</button>
+                        </form>
+                    </div>
+                    </div>
+            </div>
+            </div>
+
+            <!-- Nav tabs -->
+            
+            <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+                <ul class="nav nav-tabs nav-justified" >
+                    <li class=" nav-item nav-link "><a href="#all" aria-controls="all" data-toggle="tab">All</a></li>
+                    <li class=" nav-item nav-link "><a href="#current" aria-controls="current"  data-toggle="tab">Current</a></li>
+                </ul>
+                <span class="navbar-text white-text">
+                        Add New PBI
+                </span>
+                <span class="navbar-text white-text">
+                        <div class="col-1">
+                                <div class="row">
+                                    <img  id='add_button' src="../static/images/add_circle.png" class="img-add-edit" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                </div>
+                        </div>
+                </span>
+            </nav>
+            
+            
+          
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="all">
+
+                <!-- all -->
+                <div class="container-fluid" style="height: 100%">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="col-heading">Title</th>
+                                <th scope="col" class="col-heading">Description</th>
+                                <th scope="col" class="col-heading">Status</th>
+                                <th scope="col" class="col-heading">Sprint</th>
+                                <th scope="col" class="col-heading">Prority Level</th>
+                                <!-- <th scope="col" class="col-heading">Developers</th> -->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for e in pbis %}
+                            <tr>
+                                <td>{{e.product_backlog_title}}</td>
+                                <td>{{e.product_backlog_description}}</td>
+                                <td>{{e.product_status}}</td>
+                                <td>{{e.product_backlog_sprint}}</td>
+                                <td>{{e.product_backlog_priority}}</td>
+                                <td>
+                                    <form action="{% url 'pbisedit' %}" method="GET">
+                                        <input type="hidden" name="product_backlog_id" value="{{e.product_backlog_id}}" />
+                                        <input type="hidden" name="product_id" value="{{e.product_id}}" />
+                                        <input type="submit" value="Edit">
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- Button trigger modal -->
+                    
+                    
+                        <!-- Modal -->
+                    
+                    </div>
+
+
+            
+            
+                </div>
+                <div role="tabpanel" class="tab-pane" id="current">
+
+                        <!-- all -->
+                        <div class="container-fluid" style="height: 100%">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="col-heading">Title</th>
+                                        <th scope="col" class="col-heading">Description</th>
+                                        <th scope="col" class="col-heading">Status</th>
+                                        <th scope="col" class="col-heading">Sprint</th>
+                                        <th scope="col" class="col-heading">Prority Level</th>
+                                        <!-- <th scope="col" class="col-heading">Developers</th> -->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for e in pbis %}
+                                    <tr>
+                                        <td>{{e.product_backlog_title}}</td>
+                                        <td>{{e.product_backlog_description}}</td>
+                                        <td>{{e.product_status}}</td>
+                                        <td>{{e.product_backlog_sprint}}</td>
+                                        <td>{{e.product_backlog_priority}}</td>
+                                        <td>
+                                            <form action="{% url 'pbisedit' %}" method="GET">
+                                                <input type="hidden" name="product_backlog_id" value="{{e.product_backlog_id}}" />
+                                                <input type="hidden" name="product_id" value="{{e.product_id}}" />
+                                                <input type="submit" value="Edit">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <!-- Button trigger modal -->
+                            
+                            
+                                <!-- Modal -->
+                            
+                            </div>
+        
+        
+        
+                    </div>
+            </div>
+          
         </div>
-    </div>
-</div>
-<div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Product Backlog Item</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <form action="/pbisedit/" class="form-group col-md-12" method="post">
-            {{create_pbi.as_table}}
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary" value="productBacklog/">Save changes</button>
-        </form>
-    </div>
-    </div>
-   </div>
-</div>
-<div class="container-fluid" style="height: 100%">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col" class="col-heading">Title</th>
-            <th scope="col" class="col-heading">Description</th>
-            <th scope="col" class="col-heading">Status</th>
-            <th scope="col" class="col-heading">Sprint</th>
-            <th scope="col" class="col-heading">Prority Level</th>
-            <!-- <th scope="col" class="col-heading">Developers</th> -->
-        </tr>
-        </thead>
-        <tbody>
-        {% for e in pbis %}
-        <tr>
-            <td>{{e.product_backlog_title}}</td>
-            <td>{{e.product_backlog_description}}</td>
-            <td>{{e.product_status}}</td>
-            <td>{{e.product_backlog_sprint}}</td>
-            <td>{{e.product_backlog_priority}}</td>
-            <td>
-                <form action="{% url 'pbisedit' %}" method="GET">
-                    <input type="hidden" name="product_backlog_id" value="{{e.product_backlog_id}}" />
-                    <input type="hidden" name="product_id" value="{{e.product_id}}" />
-                    <input type="submit" value="Edit">
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <!-- Button trigger modal -->
-
-
-    <!-- Modal -->
 
 </div>
 
@@ -72,8 +167,13 @@ aria-hidden="true">
     document.getElementById('add_button').click();
 </script>
 
-<!-- second modal  -->
-
 {% endblock %}
 
-                
+
+
+
+
+
+
+
+

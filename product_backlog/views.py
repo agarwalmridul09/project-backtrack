@@ -12,21 +12,37 @@ from product_backlog.forms import CreatePBIV, CreatePBIVeri
 from product_backlog.models import ProductBacklogItem
 from product_log.models import Product
 from sprint_backlog.models import Sprint
-from utilities.constants.RoleEnum import STARTED, CREATED
+from utilities.constants.RoleEnum import STARTED, CREATED, TO_DO ,IN_PROGRESS
+
+
+#helper function for getting the pbis of a product
+def get_pbis(prod_id):
+    pbis = ProductBacklogItem.objects.filter(product_id=prod_id).order_by('product_backlog_priority')
+    pbis_current = ProductBacklogItem.objects.filter(product_id=prod_id, product_status__in=[TO_DO, IN_PROGRESS]).order_by('product_backlog_priority')
+    product_name = Product.objects.filter(product_id=prod_id)[0].product_name
+    product_id = Product.objects.filter(product_id=prod_id)[0].product_id
+    return{
+        'pbis':pbis,
+        'pbis_current':pbis_current,
+        'product_name':product_name,
+        'product_id':product_id
+    }
 
 
 def pbis_view(request, *args, **kwargs):
     if request.method == 'GET':
-        pbis = ProductBacklogItem.objects.filter(product_id=kwargs['productid']).order_by('product_backlog_priority')
-        product_name = Product.objects.filter(product_id=kwargs['productid'])[0].product_name
-        product_id = Product.objects.filter(product_id=kwargs['productid'])[0].product_id
-
+        result = get_pbis(kwargs['productid'])
+        pbis = result['pbis']
+        pbis_current = result['pbis_current']
+        product_name = result['product_name']
+        product_id = result['product_id']
     # if request.method == 'GET':
     product_instance = Product.objects.get(product_id=product_id)
 
     form = CreatePBIV(product_id=product_instance, product_backlog_id=uuid.uuid1())
 
     return render(request, 'pbis.html', {'pbis': pbis,
+                                         'pbis_current':pbis_current,
                                          'title': 'PBIs of ' + product_name,
                                          'create_pbi': form,
                                          'product_id': kwargs['productid']
@@ -54,9 +70,11 @@ def pbis_edit(request, *args, **kwargs):
         product_id = product_id[1:len(product_id) - 1]
         pbi_instance = ProductBacklogItem.objects.filter(product_backlog_id=request.GET.get('product_backlog_id')).first()
         pbis = ProductBacklogItem.objects.filter(product_id=product_id).order_by('product_backlog_priority')
+        pbis_current = ProductBacklogItem.objects.filter(product_id=product_id, product_status=[TO_DO, IN_PROGRESS]).order_by('product_backlog_priority')
         product_name = Product.objects.filter(product_id=product_id)[0].product_name
         form = CreatePBIVeri(instance=pbi_instance)
     return render(request, 'pbis_edit.html', {'pbis': pbis,
+                                              'pbis_current':pbis_current,
                                               'title': 'PBIs of ' + product_name,
                                               'create_pbi': form,
                                               })
@@ -75,4 +93,19 @@ def add_to_sprint_backlog(request, *args, **kwargs):
         current_sprint.save()
     ProductBacklogItem.objects.filter(product_backlog_id=product_id).update(
         product_backlog_sprint_id=current_sprint.sprint_id)
+    
+
+
+@csrf_exempt
+def delete_pbi(request, *args, **kwargs):
+    print('thiss')
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    product_backlog_id = body['pbi']
+    product_id = body['product_id']
+    product_id = product_id.split(" ")[2]
+    product_id = product_id[1:len(product_id) - 1]
+    #getting the instance
+    instance = ProductBacklogItem.objects.get(product_backlog_id=product_backlog_id)
+    instance.delete()
     return JsonResponse({'foo': 'bar'})
