@@ -29,7 +29,7 @@ urlpatterns = [
     url('signUp/', sign_up_view),
     url('productBacklog/', product_backlog_view),
     path('pbis/<slug:productid>', pbis_view, name='pbis'),
-    path('addPbiToSprint/', pbis_edit, name='addPbiToSprint'),
+    path('pbisedit/', pbis_edit, name='pbisedit'),
     url('pbiscreate', pbis_create),
     url('sprintBacklog', get_sprint_backlog),
 
