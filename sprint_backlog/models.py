@@ -6,7 +6,7 @@ from django.db import models
 from utilities.constants.RoleEnum import SprintStatus, CREATED, COMPLETED, STARTED
 
 
-class SprintBacklog(models.Model):
+class Sprint(models.Model):
     sprint_id = models.CharField(primary_key=True, max_length=200)
     effort_hours = models.IntegerField()
     start_time = models.DateTimeField(null=True)

@@ -20,6 +20,13 @@
         <div class="col-8">Tasks</div>
         <div class="col">Status</div>
     </div>
+    {% for e in product_backlogs %}
+    <div class="row align-items-center align-self-center" style="width: 80%;">
+        <div class="col">{{e.product_backlog_title}}</div>
+        <div class="col-8">Tasks</div>
+        <div class="col">Status</div>
+    </div>
+    {% endfor %}
 
 </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from product_backlog.models import ProductBacklog
+from product_backlog.models import ProductBacklogItem
 from product_log.models import Product
 from utilities.constants import RoleEnum
 from user_registration.models import User
@@ -11,7 +11,7 @@ import uuid
 
 class CreatePBIV(ModelForm):
     class Meta:
-        model = ProductBacklog
+        model = ProductBacklogItem
         fields= [
             'product_id',
             'product_backlog_title',
@@ -31,7 +31,7 @@ class CreatePBIV(ModelForm):
 
 class CreatePBIVeri(ModelForm):
     class Meta:
-        model = ProductBacklog
+        model = ProductBacklogItem
         fields= [
             'product_id',
             'product_backlog_title',

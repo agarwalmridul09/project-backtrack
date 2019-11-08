@@ -9,15 +9,15 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from product_backlog.forms import CreatePBIV, CreatePBIVeri
-from product_backlog.models import ProductBacklog
+from product_backlog.models import ProductBacklogItem
 from product_log.models import Product
-from sprint_backlog.models import SprintBacklog
+from sprint_backlog.models import Sprint
 from utilities.constants.RoleEnum import STARTED, CREATED
 
 
 def pbis_view(request, *args, **kwargs):
     if request.method == 'GET':
-        pbis = ProductBacklog.objects.filter(product_id=kwargs['productid']).order_by('product_backlog_priority')
+        pbis = ProductBacklogItem.objects.filter(product_id=kwargs['productid']).order_by('product_backlog_priority')
         product_name = Product.objects.filter(product_id=kwargs['productid'])[0].product_name
         product_id = Product.objects.filter(product_id=kwargs['productid'])[0].product_id
 
@@ -44,7 +44,7 @@ def pbis_create(request, *args, **kwargs):
 
 def pbis_edit(request, *args, **kwargs):
     if request.method == 'POST':
-        pbi_instance = ProductBacklog.objects.filter(product_backlog_id=request.POST['product_backlog_id']).first()
+        pbi_instance = ProductBacklogItem.objects.filter(product_backlog_id=request.POST['product_backlog_id']).first()
         form = CreatePBIVeri(request.POST, instance=pbi_instance)
         if form.is_valid():
             form.save()
@@ -52,8 +52,8 @@ def pbis_edit(request, *args, **kwargs):
     else:
         product_id = request.GET.get('product_id').split(" ")[2]
         product_id = product_id[1:len(product_id) - 1]
-        pbi_instance = ProductBacklog.objects.filter(product_backlog_id=request.GET.get('product_backlog_id')).first()
-        pbis = ProductBacklog.objects.filter(product_id=product_id).order_by('product_backlog_priority')
+        pbi_instance = ProductBacklogItem.objects.filter(product_backlog_id=request.GET.get('product_backlog_id')).first()
+        pbis = ProductBacklogItem.objects.filter(product_id=product_id).order_by('product_backlog_priority')
         product_name = Product.objects.filter(product_id=product_id)[0].product_name
         form = CreatePBIVeri(instance=pbi_instance)
     return render(request, 'pbis_edit.html', {'pbis': pbis,
@@ -67,12 +67,12 @@ def add_to_sprint_backlog(request, *args, **kwargs):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     product_id = body['pbi']
-    current_sprint = SprintBacklog.objects.get(Q(status=CREATED) | Q(status=STARTED))
+    current_sprint = Sprint.objects.get(Q(status=CREATED) | Q(status=STARTED))
     if current_sprint.status == CREATED:
         current_sprint.status = STARTED
         current_sprint.start_time = datetime.now()
         current_sprint.end_time = current_sprint.start_time + timedelta(days=15)
         current_sprint.save()
-    ProductBacklog.objects.filter(product_backlog_id=product_id).update(
+    ProductBacklogItem.objects.filter(product_backlog_id=product_id).update(
         product_backlog_sprint_id=current_sprint.sprint_id)
     return JsonResponse({'foo': 'bar'})
