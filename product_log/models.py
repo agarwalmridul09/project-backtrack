@@ -13,7 +13,8 @@ class Product(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
 
-class Developers(models.Model):
+
+class Developer(models.Model):
     id = models.CharField(primary_key=True, max_length=16)
     developer_id = models.ForeignKey(User, to_field='email', on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product, to_field='product_id', on_delete=models.CASCADE)

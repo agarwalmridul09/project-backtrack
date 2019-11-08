@@ -17,7 +17,6 @@ def product_backlog_view(request, *args, **kwargs):
                                              product_manager=cleaned_data['product_manager'],
                                              start_date=cleaned_data['start_date'],
                                              end_date=cleaned_data['end_date'])
-            print(product)
             product.save()
     else:
         form = CreateProduct()

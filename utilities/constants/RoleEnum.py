@@ -20,4 +20,15 @@ PBIStatus = (
     (COMPLETED, 'Completed')
 )
 
+# sprint status enum
+CREATED = 'CREATED'
+STARTED = 'STARTED'
+COMPLETED = 'COMPLETED'
+
+SprintStatus = (
+    (CREATED, 'Created'),
+    (STARTED, 'Started'),
+    (COMPLETED, 'Completed')
+)
+
 

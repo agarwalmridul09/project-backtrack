@@ -20,8 +20,7 @@ from django.contrib import admin
 from product_log.views import product_backlog_view
 from sprint_backlog.views import get_sprint_backlog
 from user_registration.views import login_view, sign_up_view
-from product_backlog.views import pbis_view, pbis_create, pbis_edit
-
+from product_backlog.views import pbis_view, pbis_create, pbis_edit, add_to_sprint_backlog
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,6 +29,7 @@ urlpatterns = [
     url('productBacklog/', product_backlog_view),
     path('pbis/<slug:productid>', pbis_view, name='pbis'),
     path('pbisedit/', pbis_edit, name='pbisedit'),
+    url('addToSprintBacklog', add_to_sprint_backlog, name='addToSprintBacklog'),
     url('pbiscreate', pbis_create),
     url('sprintBacklog', get_sprint_backlog),
 

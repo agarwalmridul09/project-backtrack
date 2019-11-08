@@ -4,11 +4,13 @@
     <div class="row justify-content-center">
         <div class="col-md-8 text-center justify-content-center align-items-center">
             <span class="text-white">{{error_message}}</span>
+            {% if enable_add_sprint %}
             <form action="" class="form-group col-md-12" method="post">
                 {{create_sprint.as_table}}
                 {% csrf_token %}
                 <button type="submit" class="btn btn-dark button-submit" value="sprintBacklog/">Create Sprint</button>
             </form>
+            {% endif %}
         </div>
     </div>
 </div>

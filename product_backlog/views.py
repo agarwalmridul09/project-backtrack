@@ -1,12 +1,17 @@
+import json
 import uuid
 
-from django.http import HttpResponseRedirect
+from django.db.models import Q
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-
 # Create your views here.
+from django.views.decorators.csrf import csrf_exempt
+
 from product_backlog.forms import CreatePBIV, CreatePBIVeri
 from product_backlog.models import ProductBacklog
 from product_log.models import Product
+from sprint_backlog.models import SprintBacklog
+from utilities.constants.RoleEnum import STARTED, CREATED
 
 
 def pbis_view(request, *args, **kwargs):
@@ -54,3 +59,17 @@ def pbis_edit(request, *args, **kwargs):
                                               'title': 'PBIs of ' + product_name,
                                               'create_pbi': form,
                                               })
+
+
+@csrf_exempt
+def add_to_sprint_backlog(request, *args, **kwargs):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    product_id = body['pbi']
+    current_sprint = SprintBacklog.objects.get(Q(status=CREATED) | Q(status=STARTED))
+    if current_sprint.status == CREATED:
+        current_sprint.status = STARTED
+        current_sprint.save()
+    ProductBacklog.objects.filter(product_backlog_id=product_id).update(
+        product_backlog_sprint_id=current_sprint.sprint_id)
+    return JsonResponse({'foo': 'bar'})

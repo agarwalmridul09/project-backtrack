@@ -1,6 +1,11 @@
 {% extends 'base_logged_in.html' %}
 {% block content %}
+<script>
+    function addToPBI(PbiId) {
+        axios.post(`http://127.0.0.1:8000/addToSprintBacklog/`, {pbi: PbiId}    );
+    }
 
+</script>
 <div class="row container-fluid align-items-center" style="height: 50px;">
     <div class="col-11"></div>
     <div class="col-1">
@@ -56,6 +61,7 @@ aria-hidden="true">
                     <input type="hidden" name="product_id" value="{{e.product_id}}" />
                     <input type="submit" value="Edit">
                 </form>
+                <button onclick="addToPBI(`{{e.product_backlog_id}}`);">Add to PBI</button>
             </td>
         </tr>
         {% endfor %}
@@ -65,7 +71,6 @@ aria-hidden="true">
 
 
     <!-- Modal -->
-
 </div>
 
 {% endblock %}
