@@ -1,5 +1,6 @@
 import json
 import uuid
+from datetime import datetime, timedelta
 
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
@@ -69,6 +70,8 @@ def add_to_sprint_backlog(request, *args, **kwargs):
     current_sprint = SprintBacklog.objects.get(Q(status=CREATED) | Q(status=STARTED))
     if current_sprint.status == CREATED:
         current_sprint.status = STARTED
+        current_sprint.start_time = datetime.now()
+        current_sprint.end_time = current_sprint.start_time + timedelta(days=15)
         current_sprint.save()
     ProductBacklog.objects.filter(product_backlog_id=product_id).update(
         product_backlog_sprint_id=current_sprint.sprint_id)
