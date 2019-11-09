@@ -7,9 +7,25 @@
         $("#pbi-id").val(id);
     });
 
+    $(document).ready(function () {
+        $("#burndown_bar").css("width", `{{percent_sprint_done}}%`);
+    });
+
     function editTask(taskID) {
         axios.post(`http://127.0.0.1:8000/editTask/`, {taskID: taskID}).then((res) => {
             $("#editModal").html(res.data);
+        });
+    }
+
+    function removePBI(PBIId) {
+        axios.post(`http://127.0.0.1:8000/removePBIFromSprint/`, {PBIId: PBIId}).then((res) => {
+            location.reload();
+        });
+    }
+
+    function removeTask(taskID) {
+        axios.post(`http://127.0.0.1:8000/removeTask/`, {taskID: taskID}).then((res) => {
+            location.reload();
         });
     }
 
@@ -26,6 +42,13 @@
             </form>
             {% endif %}
         </div>
+    </div>
+</div>
+<div class="progress" style="height: 40px; border-radius: 0px;">
+    <div id="burndown_bar" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+         aria-valuenow="70"
+         aria-valuemin="0" aria-valuemax="100" style="background-color: rgb(236, 74, 87); font-size: 14px;">
+        {{percent_sprint_done}}%
     </div>
 </div>
 <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -55,35 +78,104 @@
 </div>
 <br/>
 <div style="display: flex; flex-direction: column; width: 100%;">
-    <div class="row align-items-center align-self-center" style="width: 80%;">
-        <div class="col" style="text-align: center;">Product Backlog</div>
-        <div class="col-8" style="text-align: center;">Tasks</div>
-        <div class="col" style="text-align: center;">Status</div>
+    <div class="row align-items-center align-self-center" style="width: 100%;text-align: center;">
+        <div class="col">Product Backlog</div>
+        <div class="col-lg-10">Tasks</div>
     </div>
     {% for e in product_backlogs %}
-    <div class="row align-items-center align-self-center" style="width: 80%;">
-        <div class="col">{{e.product_backlog_title}}</div>
-        <div class="col-8">
-            <div class="row" style="flex-wrap: wrap;">
+    <div class="row align-items-center align-self-center" style="width: 100%; height: 225px;">
+        <div class="col text-truncate" style="height: 100%;">
+            <p style="margin: 0px; padding: 0px; font-size: 20px;">{{e.product_backlog_title}}</p>
+            <div class="text-truncate" style="font-size: 12px; margin-bottom: 10px;">{{e.product_backlog_description}}</div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-0" style="font-size: 15px; margin: 0px; padding: 0px;">Story Points
+                        <footer class="blockquote-footer">{{e.product_backlog_story_points}}</footer>
+                    </p>
+                    <p class="mb-0" style="font-size: 15px; margin: 0px; padding: 0px;">Effort Hours
+                        <footer class="blockquote-footer">{{effort_hours_by_pbis|get_item:e.product_backlog_id}}
+                        </footer>
+                    </p>
+                </div>
+                <div class="col">
+                    <p class="mb-0" style="font-size: 15px; margin: 0px; padding: 0px;">Effort Done
+                        <footer class="blockquote-footer">
+                            {{effort_hours_by_pbis_of_tasks_done_dict|get_item:e.product_backlog_id}}
+                        </footer>
+                    </p>
+                    <p class="mb-0" style="font-size: 15px; margin: 0px; padding: 0px;">PBI Status
+                        <footer class="blockquote-footer">{{pbi_status_enum | get_enum_val:e.product_status}}
+                        </footer>
+                    </p>
+                </div>
+            </div>
+            <div class="progress" style="height: 20px;">
+                <div class="progress-bar bg-info"
+                     role="progressbar"
+                     aria-valuenow="70"
+                     aria-valuemin="0" aria-valuemax="100"
+                     style="background-color: rgb(236, 74, 87); font-size: 14px; width:{{percent_done_by_pbis_dict|get_item:e.product_backlog_id}}%;">
+                    <p class="text-dark" style="padding: 0px; margin: 0px;">{{percent_done_by_pbis_dict|get_item:e.product_backlog_id}}%</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-10">
+            <div class="row">
+                <div style="overflow-x: scroll; white-space: nowrap; flex-wrap: nowrap; max-width: 87%;">
                 {% for task in e.task_id.all %}
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{task.title}}</h5>
-                        <p class="card-text">{{task.description}}.</p>
-                        <button onclick="editTask(`{{task.task_id}}`);" data-target="#editModal" data-toggle="modal"
-                                class="btn btn-primary">Go somewhere
-                        </button>
+                    <div class="card mb-3 border-info" style="width: 250px; display: inline-block;">
+                        <div class="card-header bg-transparent border-info d-flex flex-column">
+                            <div class="row d-flex flex-row justify-content-between align-items-center"
+                                 style="width: 99%; align-self: center;">
+                                <p style="margin: 0; padding: 0;">{{task.title}}</p>
+                                <i class="fa fa-remove w3-large" onclick="removeTask(`{{task.task_id}}`);"></i>
+                            </div>
+
+                        </div>
+                        <div class="card-body text-info text-truncate"
+                             style="height: 90px;word-wrap: break-word;">
+                            <p class="text-truncate">{{task.description}}</p>
+                            <span style="float: left;" class="mb-0 text-secondary">{{sprint_status_enum | get_enum_val:task.status}}</span>
+                            <span style="float: right;" class="mb-0 text-secondary">{{task.effort_hours}} Hours</span>
+                        </div>
+                        <div class="card-footer bg-transparent border-info d-flex flex-column align-items-center">
+                            <div class="row d-flex flex-row justify-content-between align-items-center"
+                                 style="width: 100%; align-self: center;">
+                                <button onclick="editTask(`{{task.task_id}}`);" data-target="#editModal"
+                                        data-toggle="modal"
+                                        class="btn btn-primary">Edit Task
+                                </button>
+                                <div class="card-text d-flex flex-column align-items-center justify-content-center"
+                                     style="height: 40px; width: 40px; border-radius: 20px; background-color: #007bff; color: white; font-size:20px; text-align: center">
+                                    {{task.owner|make_list|first|title}}
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                <div class="col-1 d-flex flex-column justify-content-around align-items-center">
+                    <div>
+                        <img src="../static/images/add.png"
+                             class="img-add-task"
+                             style="width: 45px; height: 45px; object-fit: contain;"
+                             data-toggle="modal"
+                             data-pbi-id="{{e.product_backlog_id}}"
+                             data-target="#exampleModal"/>
+                        <p class="mb-0" style="font-size: 14px; text-align: center; margin: 0px; padding: 0px;">
+                            Add Task</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <i class="fa fa-trash-o w3-xxlarge" onclick="removePBI(`{{e.product_backlog_id}}`);"></i>
+                        <p class="mb-0" style="font-size: 14px; text-align: center; margin: 0px; padding: 0px;">
+                            Remove PBI</p>
                     </div>
                 </div>
-                {% endfor %}
-                <img src="../static/images/add.png" style="object-fit: contain; height: 100px; width: 100px;"
-                     class="img-add-task"
-                     data-toggle="modal"
-                     data-pbi-id="{{e.product_backlog_id}}"
-                     data-target="#exampleModal"/>
             </div>
         </div>
-        <div class="col">Status</div>
     </div>
     {% endfor %}
 

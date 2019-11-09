@@ -15,7 +15,7 @@ class CreatePBIV(ModelForm):
             'product_backlog_title',
             'product_backlog_description',
             'product_status',
-            'product_backlog_sprint',
+            'product_backlog_story_points',
             'product_backlog_id',
             'product_backlog_priority'
         ]
@@ -36,7 +36,7 @@ class CreatePBIVeri(ModelForm):
             'product_backlog_title',
             'product_backlog_description',
             'product_status',
-            'product_backlog_sprint',
+            'product_backlog_story_points',
             'product_backlog_id',
             'product_backlog_priority'
         ]

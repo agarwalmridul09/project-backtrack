@@ -12,7 +12,7 @@ class ProductBacklogItem(models.Model):
     product_backlog_description = models.TextField()
     product_id = models.ForeignKey(Product, to_field='product_id', on_delete=models.CASCADE, related_name="pbi_product_id")
     product_status = models.CharField(max_length=200, choices=PBIStatus, default=TO_DO)
-    product_backlog_sprint = models.CharField(max_length=200)
+    product_backlog_story_points = models.PositiveIntegerField()
     product_backlog_priority = models.CharField(max_length=200, default='1')
     product_backlog_sprint_id = models.ForeignKey(Sprint, to_field='sprint_id', on_delete=models.CASCADE,
                                                   related_name='product_backlog_sprint_id', null=True, blank=True)

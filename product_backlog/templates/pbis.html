@@ -42,7 +42,7 @@ aria-hidden="true">
             <th scope="col" class="col-heading">Title</th>
             <th scope="col" class="col-heading">Description</th>
             <th scope="col" class="col-heading">Status</th>
-            <th scope="col" class="col-heading">Sprint</th>
+            <th scope="col" class="col-heading">Story Points</th>
             <th scope="col" class="col-heading">Prority Level</th>
             <!-- <th scope="col" class="col-heading">Developers</th> -->
         </tr>
@@ -53,7 +53,7 @@ aria-hidden="true">
             <td>{{e.product_backlog_title}}</td>
             <td>{{e.product_backlog_description}}</td>
             <td>{{e.product_status}}</td>
-            <td>{{e.product_backlog_sprint}}</td>
+            <td>{{e.product_backlog_story_points}}</td>
             <td>{{e.product_backlog_priority}}</td>
             <td>
                 <form action="{% url 'pbisedit' %}" method="GET">
