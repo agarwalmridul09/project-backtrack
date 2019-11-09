@@ -3,7 +3,7 @@
 {% block content %}
 
 <script>
-    
+
     function addToPBI(PbiId) {
         axios.post(`http://127.0.0.1:8000/addToSprintBacklog/`, {pbi: PbiId}    );
     }
@@ -12,8 +12,8 @@
         axios.post(`http://127.0.0.1:8000/deletePbi/`, {pbi: PbiId, product_id: ProductId},   ).then((resp)=>{
             location.reload()
         })
-        
-    
+
+
     }
 
 </script>
@@ -21,7 +21,7 @@
 <div >
 
 
-    
+
     <div>
             <div class="col-11"></div>
             <div class="modal fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -44,7 +44,7 @@
             </div>
             </div>
             <!-- Nav tabs -->
-            
+
             <nav class="navbar navbar-expand-md navbar-dark bg-primary">
                 <ul class="nav nav-tabs nav-justified" >
                     <li class=" nav-item nav-link "><a href="#all" aria-controls="all" data-toggle="tab">All</a></li>
@@ -62,9 +62,9 @@
                         </div>
                 </span>
             </nav>
-            
-            
-          
+
+
+
             <!-- Tab panes -->
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="all">
@@ -111,8 +111,8 @@
 
 
 
-            
-            
+
+
                 </div>
                 <div role="tabpanel" class="tab-pane" id="current">
 
@@ -151,16 +151,16 @@
                                     </tbody>
                                 </table>
                                 <!-- Button trigger modal -->
-        
-        
+
+
                                 <!-- Modal -->
                             </div>
-        
-        
-        
+
+
+
                     </div>
             </div>
-          
+
         </div>
 
 </div>
