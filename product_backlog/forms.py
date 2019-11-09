@@ -14,7 +14,6 @@ class CreatePBIV(ModelForm):
             'product_id',
             'product_backlog_title',
             'product_backlog_description',
-            'product_status',
             'product_backlog_story_points',
             'product_backlog_id',
             'product_backlog_priority'
@@ -25,7 +24,6 @@ class CreatePBIV(ModelForm):
         super(CreatePBIV, self).__init__(*args, **kwargs)
         self.fields['product_id'].initial = product_id
         self.fields['product_backlog_id'].initial = product_backlog_id
-        self.fields['product_status'].initial = RoleEnum.TO_DO
 
 
 class CreatePBIVeri(ModelForm):
@@ -35,7 +33,6 @@ class CreatePBIVeri(ModelForm):
             'product_id',
             'product_backlog_title',
             'product_backlog_description',
-            'product_status',
             'product_backlog_story_points',
             'product_backlog_id',
             'product_backlog_priority'

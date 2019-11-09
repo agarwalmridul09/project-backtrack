@@ -16,14 +16,4 @@ class Sprint(models.Model):
     @classmethod
     def create(cls, effort_hours):
         sprint_id = uuid.uuid1()
-        # start_time = datetime.now()
-        # end_time = start_time + timedelta(days=15)
         return cls(sprint_id=sprint_id, effort_hours=effort_hours)
-
-    # @property
-    # def status(self):
-    #     if self.end_time > datetime.now():
-    #         return COMPLETED
-    #     if self.start_time is None:
-    #         return CREATED
-    #     return STARTED

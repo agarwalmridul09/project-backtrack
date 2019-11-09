@@ -5,7 +5,8 @@
 <script>
 
     function addToPBI(PbiId) {
-        axios.post(`http://127.0.0.1:8000/addToSprintBacklog/`, {pbi: PbiId}    );
+        axios.post(`http://127.0.0.1:8000/addToSprintBacklog/`, {pbi: PbiId});
+        location.reload();
     }
 
     function deletePBI(PbiId, ProductId) {
@@ -88,16 +89,22 @@
                                 <td>{{e.product_backlog_title}}</td>
                                 <td>{{e.product_backlog_description}}</td>
                                 <td>{{e.product_status}}</td>
-                                <td>{{e.product_backlog_sprint}}</td>
+                                <td>{{e.product_backlog_story_points}}</td>
                                 <td>{{e.product_backlog_priority}}</td>
                                 <td>
+                                    {% if e.product_status == "TO_DO" or e.product_status ==  "NOT_FINISHED" %}
                                     <form action="{% url 'pbisedit' %}" method="GET">
                                         <input type="hidden" name="product_backlog_id" value="{{e.product_backlog_id}}" />
                                         <input type="hidden" name="product_id" value="{{e.product_id}}" />
                                         <input type="submit" value="Edit">
                                     </form>
-                                    <button onclick="addToPBI(`{{e.product_backlog_id}}`);">Add to PBI</button>
+                                    {% endif %}
+                                    {% if show_add_to_sprint and e.product_status !=  "IN_PROGRESS" and e.product_status !=  "COMPLETED" %}
+                                    <button onclick="addToPBI(`{{e.product_backlog_id}}`);">Add to Sprint</button>
+                                    {% endif %}
+                                    {% ifequal e.product_status "TO_DO" %}
                                     <button onclick="deletePBI(`{{e.product_backlog_id}}`, `{{e.product_id}}`);">Delete</button>
+                                    {% endifequal %}
                                 </td>
                             </tr>
                             {% endfor %}
@@ -135,16 +142,23 @@
                                         <td>{{e.product_backlog_title}}</td>
                                         <td>{{e.product_backlog_description}}</td>
                                         <td>{{e.product_status}}</td>
-                                        <td>{{e.product_backlog_sprint}}</td>
+                                        <td>{{e.product_backlog_story_points}}</td>
                                         <td>{{e.product_backlog_priority}}</td>
                                         <td>
+                                            {% if e.product_status == "TO_DO" or e.product_status ==  "NOT_FINISHED" %}
                                             <form action="{% url 'pbisedit' %}" method="GET">
                                                 <input type="hidden" name="product_backlog_id" value="{{e.product_backlog_id}}" />
                                                 <input type="hidden" name="product_id" value="{{e.product_id}}" />
                                                 <input type="submit" value="Edit">
                                             </form>
-                                            <button onclick="addToPBI(`{{e.product_backlog_id}}`);">Add to PBI</button>
+                                            {% endif %}
+                                            {% if show_add_to_sprint and e.product_status !=  "IN_PROGRESS" and e.product_status !=  "COMPLETED" %}
+                                            <button onclick="addToPBI(`{{e.product_backlog_id}}`);">Add to Sprint
+                                            </button>
+                                            {% endif %}
+                                            {% ifequal e.product_status "TO_DO" %}
                                             <button onclick="deletePBI(`{{e.product_backlog_id}}`, `{{e.product_id}}`);">Delete</button>
+                                            {% endifequal %}
                                         </td>
                                     </tr>
                                     {% endfor %}

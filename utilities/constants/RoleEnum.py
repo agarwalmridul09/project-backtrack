@@ -13,11 +13,13 @@ UserRole = (
 IN_PROGRESS = 'IN_PROGRESS'
 TO_DO = 'TO_DO'
 COMPLETED = 'COMPLETED'
+NOT_FINISHED = "NOT_FINISHED"
 
 PBIStatus = (
     (IN_PROGRESS, 'In Progress'),
     (TO_DO, 'To Do'),
-    (COMPLETED, 'Completed')
+    (COMPLETED, 'Completed'),
+    (NOT_FINISHED, 'Not Finished')
 )
 
 # sprint status enum
