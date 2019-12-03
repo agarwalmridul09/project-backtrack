@@ -30,11 +30,16 @@ def get_sprint_backlog(request, *args, **kwargs):
     percent_done = 0
     effort_hours_by_pbis_of_tasks_done_dict = None
     percent_done_by_pbis_dict = {}
-    sprint_hours = 0
-    story_points = {}
-    hours_done = {}
+    story_points = {
+        'product_backlog_story_points__sum': 0
+    }
+    hours_done = {
+        'effort_hours__sum': 0
+    }
+    effort_hours = 0
     try:
         current_sprint = Sprint.objects.get(Q(status=CREATED) | Q(status=STARTED))
+        effort_hours = model_to_dict(current_sprint)['effort_hours']
     except Exception as e:
         print(e)
         current_sprint = None
@@ -48,7 +53,7 @@ def get_sprint_backlog(request, *args, **kwargs):
             sumsize=Sum('effort_hours'))
         hours_done = PBITask.objects.filter(Q(status=COMPLETED)).aggregate(Sum('effort_hours'))
         total_hours = PBITask.objects.aggregate(Sum('effort_hours'))
-        if hours_done['effort_hours__sum'] is None:
+        if hours_done['effort_hours__sum'] is None or product_backlogs.count() == 0:
             hours_done['effort_hours__sum'] = 0
         if total_hours['effort_hours__sum'] is None:
             total_hours['effort_hours__sum'] = 1
@@ -70,7 +75,7 @@ def get_sprint_backlog(request, *args, **kwargs):
     enable_add_sprint, current_sprint = check_sprint_status(current_sprint)
     return render(request, 'sprint_backlog.html',
                   {"title": "Sprint Backlog: " + str(hours_done['effort_hours__sum']) + " hrs of " + str(
-                      model_to_dict(current_sprint)['effort_hours']) + " hrs done, " + str(
+                      effort_hours) + " hrs done, " + str(
                       story_points['product_backlog_story_points__sum']) + " Story Points", "create_sprint": form,
                    "enable_add_sprint": enable_add_sprint,
                    "product_backlogs": product_backlogs,

@@ -16,7 +16,6 @@ from product_log.models import Product
 from sprint_backlog.models import Sprint
 from utilities.constants.RoleEnum import STARTED, CREATED, TO_DO, IN_PROGRESS, COMPLETED, NOT_FINISHED
 
-
 # helper function for getting the pbis of a product
 def get_pbis(prod_id):
     pbis = ProductBacklogItem.objects.filter(product_id=prod_id).order_by('product_backlog_priority')
@@ -34,14 +33,19 @@ def get_pbis(prod_id):
 
 
 def check_sprint_status(current_sprint):
+    print("1")
     enable_add_sprint = False
     if current_sprint is None:
+        print("2")
         enable_add_sprint = True
     else:
+        print("3")
         if model_to_dict(current_sprint)['end_time'] is None:
-            print("abc")
+            print("4")
             return enable_add_sprint, current_sprint
+        print(model_to_dict(current_sprint)['end_time'] < timezone.now())
         if model_to_dict(current_sprint)['end_time'] < timezone.now():
+            print("abc")
             ProductBacklogItem.objects.filter(
                 Q(product_backlog_sprint_id=current_sprint.sprint_id) & ~Q(product_status=COMPLETED)).update(
                 product_status=NOT_FINISHED, product_backlog_sprint_id=None)
